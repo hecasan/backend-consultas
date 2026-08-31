@@ -1,8 +1,11 @@
 package com.fiap.ec.backend_consultas.service;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import com.fiap.ec.backend_consultas.model.Medico;
 import com.fiap.ec.backend_consultas.repository.MedicoRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
 @Service
 public class MedicoService {
     private final MedicoRepository repository;
@@ -25,10 +28,17 @@ public class MedicoService {
         medicoExistente.setCrm(medicoAtualizado.getCrm());
         medicoExistente.setEspecialidade(medicoAtualizado.getEspecialidade());
         medicoExistente.setAtivo(medicoAtualizado.getAtivo());
+        medicoExistente.setValorConsulta(medicoAtualizado.getValorConsulta());
         return repository.save(medicoExistente);
     }
     public void deletar(Long id) {
         Medico medico = buscarPorId(id);
         repository.delete(medico);
+    }
+    public Optional<Medico> buscarPorCrm(String crm) {
+        return repository.findByCrm(crm);
+    }
+    public List<Medico> listarPorEspecialidade(Long especialidadeId) {
+        return repository.findByEspecialidadeId(especialidadeId);
     }
 }
